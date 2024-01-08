@@ -1,0 +1,40 @@
+Dataset analysis code script    
+
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import norm
+
+# Read the data from the "data1.csv" file
+data = pd.read_csv("data1.csv")
+
+# Create a probability density function using a histogram
+n, bins, _ = plt.hist(data['Salary'], bins=30, density=True, alpha=0.7, label='Histogram')
+
+# Fit a normal distribution to the data
+mu, std = norm.fit(data['Salary'])
+xmin, xmax = plt.xlim()
+x = np.linspace(xmin, xmax, 100)
+p = norm.pdf(x, mu, std)
+plt.plot(x, p, 'k', linewidth=2, label='Fit result')
+
+# Calculate W˜, the mean annual salary
+mean_salary = np.mean(data['Salary'])
+
+# Calculate X such that 33% of people have a salary above X
+percentage_above_X = 33
+X = np.percentile(data['Salary'], 100 - percentage_above_X)
+
+# Plot the values on the graph
+plt.axvline(mean_salary, color='r', linestyle='dashed', linewidth=2, label=f'Mean Salary ($W\\tilde{{}}$): {mean_salary:.2f}')
+plt.axvline(X, color='g', linestyle='dashed', linewidth=2, label=f'X ({percentage_above_X}% above): {X:.2f}')
+
+# Add labels and title
+plt.xlabel('Annual Salary (Euros)')
+plt.ylabel('Probability Density')
+plt.title('Salary Distribution and Statistics')
+plt.legend()
+
+# Show the plot
+plt.show()
