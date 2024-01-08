@@ -1,0 +1,38 @@
+Contents
+1.	Report on Salary Distribution Analysis	2
+1.1 Data Description	2
+1.2 Distribution Description	2
+1.3 Calculation of Mean Value	2
+1.4 Calculation of Required Value X	2
+2.	Results	2
+3.	Conclusion	3
+
+
+
+
+
+
+
+
+
+
+
+
+
+1.	Report on Salary Distribution Analysis
+1.1 Data Description
+This analysis is based on the dataset provided in the data1.csv file, which contains information about annual salaries. The data is loaded into a Pandas Dataframe using the pd.read_csv() function. Relevant libraries such as NumPy, Matplotlib, and SciPy are imported to facilitate statistical analysis and visualization.
+1.2 Distribution Description
+To analyze the salary distribution, a probability density function (PDF) is created using a histogram with 30 bins. The normal distribution is then fitted to the data using the mean (mu) and standard deviation (std) calculated from the dataset.
+1.3 Calculation of Mean Value
+The mean annual salary (W˜) is calculated using the NumPy function np.mean(data['Salary']). This provides the average salary across all individuals in the dataset. The red dashed line on the plot represents this mean value. The formula for calculating the mean is:
+ Where W˜ is the mean salary, N is the number of data points, and Wi     is the salary of the i-th individual.
+1.4 Calculation of Required Value X
+The value X is determined such that a certain percentage (in this case, 33%) of people has a salary above X. This is calculated using the np.percentile() function. The formula for finding X is:
+X=Percentile (Salary, 100−percentage_above_X)
+In this analysis, X represents the salary above which 33% of individuals fall. The green dashed line on the plot indicates this threshold.
+2.	Results
+Mean Salary (W˜): The mean salary is calculated to be €mean_salary. This provides a central measure of the salary distribution.
+X (33% above): The value of X is calculated as €X, indicating the salary above which 33% of individuals in the dataset earn.
+3.	Conclusion
+This analysis and overview of the salary distribution is valuable for understanding income disparities and making informed decisions related to salary structures. The visual representation enhances interpretability, making it easier to communicate findings to stakeholders.
