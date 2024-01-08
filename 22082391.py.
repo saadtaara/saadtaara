@@ -1,0 +1,53 @@
+Data visualization code script
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+
+# Define countries of interest
+countries = ["United States", "United Kingdom", "Belgium", "Hungary", "Canada", "Australia", "Russia", "China", "France", "India"]
+
+# Load data 
+data = pd.read_csv("https://data.worldbank.org)
+
+# Filter data for selected countries
+df_filtered = data[data["Country"].isin(countries)]
+
+# Age Range of Disease Prevalence (Bar Chart)
+age_groups = df_filtered.groupby("Age Range")["Disease Rate"].mean().reset_index()
+plt.figure(figsize=(10, 6))
+sns.barplot(x="Age Range", y="Disease Rate", data=age_groups)
+plt.xlabel("Age Range")
+plt.ylabel("Disease Rate (decimal)")
+plt.title("Disease Prevalence by Age Range in Selected Countries")
+plt.xticks(rotation=45, ha="right")
+plt.tight_layout()
+
+# Overall Disease Rate by country (Pie Chart)
+disease_rates = df_filtered.groupby("Country")["Disease Rate"].mean().reset_index()
+plt.figure(figsize=(6, 6))
+plt.pie(disease_rates["Disease Rate"], labels=disease_rates["Country"], autopct="%1.1f%%")
+plt.title("Overall Disease Rate in Selected Countries")
+plt.axis("equal")
+
+# Mortality Rate from household activities, Pollution (line graph)
+pollution_mortality = df_filtered.groupby("Country")["Pollution Mortality Rate"].mean().reset_index()
+plt.figure(figsize=(6, 6))
+plt.stackplot(pollution_mortality["Country"], pollution_mortality["Pollution Mortality Rate"], labels=["Pollution, Household Activities Mortality Rate"])
+plt.title("Mortality Rate from Household & Ambient Air Pollution (per 10,000 population)")
+plt.axis("equal")
+
+# Death Rate by Disease Type (line Graph)
+communicable_death_rate = np.mean(df_filtered[df_filtered["Disease Type"] == "Communicable"]["Death Rate"])
+noncommunicable_death_rate = np.mean(df_filtered[df_filtered["Disease Type"] == "Non-Communicable"]["Death Rate"])
+total_death_rate = communicable_death_rate + noncommunicable_death_rate
+plt.figure(figsize=(8, 5))
+plt.bar(["Communicable", "Non-Communicable"], [communicable_death_rate, noncommunicable_death_rate], color=["brown", "blue"])
+plt.xlabel("Disease Type")
+plt.ylabel("Death Rate (%)")
+plt.title("Death Rate Caused by Communicable and Non-Communicable Diseases (% of total)")
+plt.ylim(0, total_death_rate * 1.1)
+
+# Save the final figure
+plt.savefig("22082391.png", dpi=300)
