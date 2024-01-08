@@ -52,4 +52,4 @@ plt.ylim(0, total_death_rate * 1.1)
 # Save the final figure
 plt.savefig("22082391.png", dpi=300)
 
-https://github.com/saadtaara/saadtaara/blob/main/22082391.py.
+
