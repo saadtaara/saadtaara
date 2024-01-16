@@ -1,0 +1,36 @@
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.stats import linregress
+import pandas as pd
+
+# Define countries of interest
+Countries = ["Kuwait", "Burundi", "United Arab Emirates"]
+
+# Load Data for population increase per annual %
+data_url = "https://data.worldbank.org/indicator/EN.ATM.CO2E.PC?locations=" + ";".join(countries)
+df = pd.read_csv(data_url, skiprows=4)
+
+# Extract data for each country
+years = df.columns[4:].astype(int)
+
+# Calculate and plot for each country
+for country in countries:
+    country_data = df[df['Country Name'] == country].iloc[:, 4:].values.flatten()
+    country_growth = np.diff(country_data) / country_data[:-1] * 100
+
+    # Create scatter plot
+    plt.scatter(years[:-1], country_growth, label=country)
+
+    # Line of best fit
+    slope, intercept, _, _, _ = linregress(years[60:-1], country_growth[60:])
+    line_fit = np.polyval([slope, intercept], years[60:-1])
+    plt.plot(years[60:-1], line_fit, linestyle='--', color='grey')
+
+# Customize plot
+plt.title('Population Growth Rate Over Time')
+plt.xlabel('Years')
+plt.ylabel('Population increase (%)')
+plt.legend()
+plt.grid(True)
+plt.show()
+
