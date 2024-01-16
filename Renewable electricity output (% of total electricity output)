@@ -1,0 +1,41 @@
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.stats import linregress
+import pandas as pd
+
+# Define countries of interest
+countries = ["china", "Iraq", "morocco"]
+
+# Load Data for renewable electricity output (% of total electricity output)
+data_url = "https://data.worldbank.org/indicator/EN.ATM.CO2E.PC?locations=" + ";".join(countries)
+df = pd.read_csv(data_url, skiprows=4)
+
+# Extract years and renewable percentages for each country
+years = df.columns[4:].astype(int)
+china_renewable_percent = df[df['Country Name'] == 'China'].iloc[:, 4:].values.flatten()
+iraq_renewable_percent = df[df['Country Name'] == 'Iraq'].iloc[:, 4:].values.flatten()
+morocco_renewable_percent = df[df['Country Name'] == 'Morocco'].iloc[:, 4:].values.flatten()
+
+# Create scatter plot
+plt.scatter(years, china_renewable_percent, label='China', color='yellow')
+plt.scatter(years, iraq_renewable_percent, label='Iraq', color='red')
+plt.scatter(years, morocco_renewable_percent, label='Morocco', color='blue')
+
+# Calculate and plot the line of best fit
+def plot_line_of_best_fit(x, y, label):
+    slope, intercept, r_value, p_value, std_err = linregress(x, y)
+    line = slope * x + intercept
+    plt.plot(x, line, label=label)
+
+plot_line_of_best_fit(years, china_renewable_percent, 'China')
+plot_line_of_best_fit(years, iraq_renewable_percent, 'Iraq')
+plot_line_of_best_fit(years, morocco_renewable_percent, 'Morocco')
+
+# Customize the plot
+plt.title('Renewable Electricity Output Over Years')
+plt.xlabel('Year')
+plt.ylabel('Renewable Electricity Output (% of Total Output)')
+plt.legend()
+plt.grid(True)
+plt.show()
+
